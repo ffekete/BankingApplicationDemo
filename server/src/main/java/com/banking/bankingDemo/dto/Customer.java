@@ -1,8 +1,10 @@
 package com.banking.bankingDemo.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.rest.core.annotation.RestResource;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "customer")
@@ -17,7 +19,12 @@ public class Customer {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "balance_id")
     @RestResource(path = "customerBalance", rel = "customer")
+    @JsonIgnoreProperties("customer")
     private Balance balance;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("customerHistories")
+    private Set<CustomerHistory> customerHistories;
 
     public Customer() {
     }
@@ -67,4 +74,11 @@ public class Customer {
                 id, firstName, lastName);
     }
 
+    public Set<CustomerHistory> getCustomerHistories() {
+        return customerHistories;
+    }
+
+    public void setCustomerHistories(Set<CustomerHistory> customerHistories) {
+        this.customerHistories = customerHistories;
+    }
 }

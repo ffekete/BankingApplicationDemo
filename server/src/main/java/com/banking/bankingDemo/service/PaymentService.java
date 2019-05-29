@@ -2,6 +2,7 @@ package com.banking.bankingDemo.service;
 
 import com.banking.bankingDemo.dto.Balance;
 import com.banking.bankingDemo.dto.Customer;
+import com.banking.bankingDemo.dto.CustomerHistory;
 import com.banking.bankingDemo.repository.BalanceRepository;
 import com.banking.bankingDemo.repository.CustomerRepository;
 import org.slf4j.Logger;
@@ -42,6 +43,21 @@ public class PaymentService {
             Balance toBalance = balanceRepository.findByCustomerId(toId);
 
             if (fromBalance.getBalance() >= amount) {
+
+                CustomerHistory customerHistoryForCustomer1 = new CustomerHistory();
+                customerHistoryForCustomer1.setAmount(-amount);
+                customerHistoryForCustomer1.setFromId(fromId);
+                customerHistoryForCustomer1.setToId(toId);
+
+                fromCustomer.getCustomerHistories().add(customerHistoryForCustomer1);
+
+                CustomerHistory customerHistoryForCustomer2 = new CustomerHistory();
+                customerHistoryForCustomer2.setAmount(amount);
+                customerHistoryForCustomer2.setFromId(fromId);
+                customerHistoryForCustomer2.setToId(toId);
+
+                toCustomer.getCustomerHistories().add(customerHistoryForCustomer2);
+
                 fromBalance.setBalance(fromBalance.getBalance() - amount);
                 toBalance.setBalance(toBalance.getBalance() + amount);
                 customerRepository.save(fromCustomer);

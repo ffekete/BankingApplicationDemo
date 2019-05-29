@@ -1,5 +1,7 @@
 package com.banking.bankingDemo.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 @Entity
@@ -11,6 +13,7 @@ public class Balance {
     private Long id;
 
     @OneToOne(mappedBy = "balance")
+    @JsonIgnoreProperties("balance")
     private Customer customer;
 
     private Double balance;

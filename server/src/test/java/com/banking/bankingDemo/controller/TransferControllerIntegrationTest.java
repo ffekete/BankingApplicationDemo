@@ -1,8 +1,6 @@
 package com.banking.bankingDemo.controller;
 
-import com.banking.bankingDemo.controller.wto.CustomerRequestWTO;
-import com.banking.bankingDemo.controller.wto.TransferRequestWTO;
-import com.banking.bankingDemo.controller.wto.TransferResponseWTO;
+import com.banking.bankingDemo.controller.wto.*;
 import com.banking.bankingDemo.dto.Balance;
 import com.banking.bankingDemo.dto.Customer;
 import com.google.gson.Gson;
@@ -17,11 +15,10 @@ import org.apache.http.impl.client.HttpClients;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
+import java.util.HashSet;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -45,6 +42,7 @@ public class TransferControllerIntegrationTest {
         Balance balance = new Balance(100d);
         customer.setBalance(balance);
         customer.setId(2L);
+        customer.setCustomerHistories(new HashSet<>());
 
         client = HttpClients.createDefault();
         HttpPost createUserRequest = new HttpPost("http://localhost:8080/c/create");
@@ -63,6 +61,7 @@ public class TransferControllerIntegrationTest {
         Balance balance2 = new Balance(500d);
         customer2.setBalance(balance2);
         customer2.setId(4L);
+        customer2.setCustomerHistories(new HashSet<>());
 
         client = HttpClients.createDefault();
         HttpPost createUserRequestForUser2 = new HttpPost(CREATE_CUSTOMER_URL);
@@ -95,6 +94,34 @@ public class TransferControllerIntegrationTest {
         TransferResponseWTO transferResponseWTO = new Gson().fromJson(IOUtils.toString(transferResponse.getEntity().getContent()), TransferResponseWTO.class);
         assertThat(transferResponseWTO.getHttpStatus(), is(200));
         assertThat(transferResponseWTO.getText(), is("Transaction completed successfully"));
+
+        // do a history query for Bruce wayne
+        HttpPost httpPostForHistory = new HttpPost("http://localhost:8080/h/history");
+        BankStatementRequestWTO bankStatementRequestWTO = new BankStatementRequestWTO();
+        bankStatementRequestWTO.setId(2L);
+        httpPostForHistory.setEntity(new StringEntity(new Gson().toJson(bankStatementRequestWTO)));
+        httpPostForHistory.setHeader(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString());
+        client = HttpClients.createDefault();
+        HttpResponse responseForHistory = client.execute(httpPostForHistory);
+
+        assertThat(responseForHistory.getStatusLine().getStatusCode(), is(200));
+        BankStatementWTO bankStatementWTO = new Gson().fromJson(IOUtils.toString(responseForHistory.getEntity().getContent()), BankStatementWTO.class);
+        assertThat(bankStatementWTO.getBalance().getBalance(), is(50d));
+        assertThat(bankStatementWTO.getFirstName(), is("Bruce"));
+
+        // do a history query
+        HttpPost httpPostForHistoryForcustomer2 = new HttpPost("http://localhost:8080/h/history");
+        BankStatementRequestWTO bankStatementRequestWTOForcustomer2 = new BankStatementRequestWTO();
+        bankStatementRequestWTOForcustomer2.setId(4L);
+        httpPostForHistoryForcustomer2.setEntity(new StringEntity(new Gson().toJson(bankStatementRequestWTOForcustomer2)));
+        httpPostForHistoryForcustomer2.setHeader(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString());
+        client = HttpClients.createDefault();
+        HttpResponse responseForHistoryForcustomer2 = client.execute(httpPostForHistoryForcustomer2);
+
+        assertThat(responseForHistoryForcustomer2.getStatusLine().getStatusCode(), is(200));
+        BankStatementWTO bankStatementWTOForcustomer2 = new Gson().fromJson(IOUtils.toString(responseForHistoryForcustomer2.getEntity().getContent()), BankStatementWTO.class);
+        assertThat(bankStatementWTOForcustomer2.getBalance().getBalance(), is(550d));
+        assertThat(bankStatementWTOForcustomer2.getFirstName(), is("Peter"));
     }
 
 

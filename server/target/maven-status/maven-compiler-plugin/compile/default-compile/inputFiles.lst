@@ -1,11 +1,17 @@
+D:\project\BankingApplicationDemo\server\src\main\java\com\banking\bankingDemo\controller\wto\BankStatementWTO.java
 D:\project\BankingApplicationDemo\server\src\main\java\com\banking\bankingDemo\controller\wto\CustomerRequestWTO.java
 D:\project\BankingApplicationDemo\server\src\main\java\com\banking\bankingDemo\repository\CustomerRepository.java
 D:\project\BankingApplicationDemo\server\src\main\java\com\banking\bankingDemo\controller\wto\TransferResponseWTO.java
 D:\project\BankingApplicationDemo\server\src\main\java\com\banking\bankingDemo\dto\Customer.java
+D:\project\BankingApplicationDemo\server\src\main\java\com\banking\bankingDemo\controller\wto\BankStatementRequestWTO.java
+D:\project\BankingApplicationDemo\server\src\main\java\com\banking\bankingDemo\dto\CustomerHistory.java
 D:\project\BankingApplicationDemo\server\src\main\java\com\banking\bankingDemo\service\PaymentService.java
 D:\project\BankingApplicationDemo\server\src\main\java\com\banking\bankingDemo\repository\JpaConfiguration.java
 D:\project\BankingApplicationDemo\server\src\main\java\com\banking\bankingDemo\controller\TransferController.java
 D:\project\BankingApplicationDemo\server\src\main\java\com\banking\bankingDemo\dto\Balance.java
+D:\project\BankingApplicationDemo\server\src\main\java\com\banking\bankingDemo\controller\BankStatementController.java
+D:\project\BankingApplicationDemo\server\src\main\java\com\banking\bankingDemo\service\BankStatementService.java
+D:\project\BankingApplicationDemo\server\src\main\java\com\banking\bankingDemo\repository\CustomerHistoryRepository.java
 D:\project\BankingApplicationDemo\server\src\main\java\com\banking\bankingDemo\config\SwaggerConfig.java
 D:\project\BankingApplicationDemo\server\src\main\java\com\banking\bankingDemo\BankingDemoApplication.java
 D:\project\BankingApplicationDemo\server\src\main\java\com\banking\bankingDemo\controller\CustomerController.java

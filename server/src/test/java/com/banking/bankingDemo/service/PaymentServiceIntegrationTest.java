@@ -13,6 +13,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 
+import java.util.HashSet;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(SpringRunner.class)
@@ -46,10 +48,12 @@ public class PaymentServiceIntegrationTest {
         paymentService = new PaymentService(customerRepository, balanceRepository);
         Balance balanceForCustomer1 = new Balance(101.2d);
         Customer customer = new Customer("John", "Doe", balanceForCustomer1);
+        customer.setCustomerHistories(new HashSet<>());
         customerRepository.save(customer);
 
         Balance balanceForCustomer2 = new Balance(1d);
         Customer customer2 = new Customer("Vicky", "Gulie", balanceForCustomer2);
+        customer2.setCustomerHistories(new HashSet<>());
         customerRepository.save(customer2);
         // WHEN
         paymentService.pay(customer.getId(), customer2.getId(), 100d);

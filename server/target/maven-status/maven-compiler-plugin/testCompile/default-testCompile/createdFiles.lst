@@ -1,2 +1,3 @@
-com\banking\bankingDemo\BankingDemoApplicationIntegrationTest.class
+com\banking\bankingDemo\service\PaymentServiceIntegrationTest.class
+com\banking\bankingDemo\RepositoryAccessIntegrationTest.class
 com\banking\bankingDemo\controller\TransferControllerIntegrationTest.class
